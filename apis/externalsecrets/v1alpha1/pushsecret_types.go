@@ -38,13 +38,6 @@ type PushSecretStoreRef struct {
 	Kind string `json:"kind,omitempty"`
 }
 
-type PushSecretDeletionPolicy string
-
-const (
-	PushSecretDeletionPolicyDelete PushSecretDeletionPolicy = "Delete"
-	PushSecretDeletionPolicyNone   PushSecretDeletionPolicy = "None"
-)
-
 // PushSecretSpec configures the behavior of the PushSecret.
 type PushSecretSpec struct {
 	// The Interval to which External Secrets will try to push a secret definition
@@ -52,8 +45,9 @@ type PushSecretSpec struct {
 	SecretStoreRefs []PushSecretStoreRef `json:"secretStoreRefs"`
 	// Deletion Policy to handle Secrets in the provider. Possible Values: "Delete/None". Defaults to "None".
 	// +kubebuilder:default="None"
+	// +kubebuilder:validation:Enum=Delete;None
 	// +optional
-	DeletionPolicy PushSecretDeletionPolicy `json:"deletionPolicy,omitempty"`
+	DeletionPolicy string `json:"deletionPolicy,omitempty"`
 	// The Secret Selector (k8s source) for the Push Secret
 	Selector PushSecretSelector `json:"selector"`
 	// Secret Data that should be pushed to providers

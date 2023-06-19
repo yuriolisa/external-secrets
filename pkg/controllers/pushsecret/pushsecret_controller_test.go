@@ -224,7 +224,7 @@ var _ = Describe("ExternalSecret controller", func() {
 				Namespace: PushSecretNamespace,
 			},
 			Spec: v1alpha1.PushSecretSpec{
-				DeletionPolicy: v1alpha1.PushSecretDeletionPolicyDelete,
+				DeletionPolicy: "Delete",
 				SecretStoreRefs: []v1alpha1.PushSecretStoreRef{
 					{
 						Name: PushSecretStore,
@@ -281,7 +281,7 @@ var _ = Describe("ExternalSecret controller", func() {
 				Namespace: PushSecretNamespace,
 			},
 			Spec: v1alpha1.PushSecretSpec{
-				DeletionPolicy: v1alpha1.PushSecretDeletionPolicyDelete,
+				DeletionPolicy: "Delete",
 				SecretStoreRefs: []v1alpha1.PushSecretStoreRef{
 					{
 						Name: PushSecretStore,
@@ -333,7 +333,7 @@ var _ = Describe("ExternalSecret controller", func() {
 		fakeProvider.DeleteSecretFn = func() error {
 			return fmt.Errorf("boom")
 		}
-		tc.pushsecret.Spec.DeletionPolicy = v1alpha1.PushSecretDeletionPolicyDelete
+		tc.pushsecret.Spec.DeletionPolicy = "Delete"
 		tc.assert = func(ps *v1alpha1.PushSecret, secret *v1.Secret) bool {
 			secondStore := &v1beta1.SecretStore{
 				ObjectMeta: metav1.ObjectMeta{
@@ -375,7 +375,7 @@ var _ = Describe("ExternalSecret controller", func() {
 		fakeProvider.DeleteSecretFn = func() error {
 			return nil
 		}
-		tc.pushsecret.Spec.DeletionPolicy = v1alpha1.PushSecretDeletionPolicyDelete
+		tc.pushsecret.Spec.DeletionPolicy = "Delete"
 		tc.assert = func(ps *v1alpha1.PushSecret, secret *v1.Secret) bool {
 			secondStore := &v1beta1.SecretStore{
 				ObjectMeta: metav1.ObjectMeta{

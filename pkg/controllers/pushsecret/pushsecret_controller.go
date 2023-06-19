@@ -95,7 +95,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 		}
 	}()
 	switch ps.Spec.DeletionPolicy {
-	case esapi.PushSecretDeletionPolicyDelete:
+	case "Delete":
 		// finalizer logic. Only added if we should delete the secrets
 		if ps.ObjectMeta.DeletionTimestamp.IsZero() {
 			if !controllerutil.ContainsFinalizer(&ps, pushSecretFinalizer) {
@@ -126,7 +126,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 				return ctrl.Result{}, nil
 			}
 		}
-	case esapi.PushSecretDeletionPolicyNone:
+	case "None":
 	default:
 	}
 
@@ -155,7 +155,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 		return ctrl.Result{}, err
 	}
 	switch ps.Spec.DeletionPolicy {
-	case esapi.PushSecretDeletionPolicyDelete:
+	case "Delete":
 		badSyncState, err := r.DeleteSecretFromProviders(ctx, &ps, syncedSecrets, mgr)
 		if err != nil {
 			msg := fmt.Sprintf("Failed to Delete Secrets from Provider: %v", err)
@@ -165,7 +165,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 			r.recorder.Event(&ps, v1.EventTypeWarning, esapi.ReasonErrored, msg)
 			return ctrl.Result{}, err
 		}
-	case esapi.PushSecretDeletionPolicyNone:
+	case "None":
 	default:
 	}
 	msg := "PushSecret synced successfully"
